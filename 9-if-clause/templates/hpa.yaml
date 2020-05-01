@@ -1,0 +1,17 @@
+# Create if clause to disable hpa for `hpa.enabled: false` deployments
+{{ range .Values.deployments }}
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .deploymentName }}
+spec:
+  maxReplicas: 2
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: {{ .deploymentName }}
+  targetCPUUtilizationPercentage: 85
+{{ end }}
+

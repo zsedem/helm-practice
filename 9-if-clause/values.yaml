@@ -1,0 +1,10 @@
+deployments:
+- hpa:
+    enabled: true
+  deploymentName: my-first-deployment-withhpa
+- hpa:
+    enabled: false
+  deploymentName: my-second-deployment-without-hpa
+- hpa:
+    enabled: true
+  deploymentName: my-third-deployment-without-hpa
