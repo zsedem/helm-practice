@@ -1,0 +1,4 @@
+hpas:
+- name: myhpa
+- name: myotherhpa
+- name: 3rdhpa

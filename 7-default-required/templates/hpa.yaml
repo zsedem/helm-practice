@@ -1,0 +1,28 @@
+# Use default and required functions for the following tasks
+#
+#   1. make the template fail to run if name is not provided in the array
+#   2. make the deploymentName variable to be the name by default if it is not provided
+#
+{{ define "my.hpa" }}
+{{ $name:= .name }}
+{{ $deploymentName:= .deploymentName }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $name }}
+spec:
+  maxReplicas: 2
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: {{ $deploymentName }}
+  targetCPUUtilizationPercentage: 85
+
+{{ end }}
+
+{{ range .Values.hpas }}
+---
+{{ template "my.hpa" . }}
+{{ end }}
+
