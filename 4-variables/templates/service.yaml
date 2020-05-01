@@ -1,0 +1,18 @@
+# Extract the service name into a variable.
+#
+# +1: Extract subexpressions to variables
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ trimAll "-" (lower (regexReplaceAll "[^a-zA-Z-]" (regexReplaceAll " " $.Values.title "-") "")) }}
+  annotations:
+    service-title: "{{ $.Values.title }}"
+spec:
+  clusterIP: 10.2.2.61
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: "svc"
+    port: 9051
+  selector:
+    app: {{ trimAll "-" (lower (regexReplaceAll "[^a-zA-Z-]" (regexReplaceAll " " $.Values.title "-") "")) }}
+  type: NodePort
