@@ -1,0 +1,24 @@
+# Use the defined mapping in values.yaml to define $region and
+# $shortRegion variables correctly
+#
+{{ range .Values.hpas }}
+---
+{{ $region := ??? }}
+{{ $shortRegion := ??? }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-hpa-{{ $shortRegion }}
+  labels:
+    aws-resource: "aws:{{ $region }}:imagination/xxx"
+spec:
+  maxReplicas: 2
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: my-hpa-{{ $shortRegion }}
+  targetCPUUtilizationPercentage: 85
+{{ end }}
+
+

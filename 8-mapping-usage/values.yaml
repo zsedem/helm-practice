@@ -1,0 +1,9 @@
+regions:
+- us-east-1
+- us-west-2
+- ap-southeast-1
+
+shortRegions:
+  "us-east-1": use1
+  "us-west-2": usw2
+  "ap-southeast-1": apse1
