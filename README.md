@@ -6,4 +6,4 @@ To run an example change to the directory and run
 helm template .  --values values.yaml
 ```
 
-> Helm version originally used for createing the examples is v2.14.3
+> Helm version originally used for creating the examples is v2.14.3
