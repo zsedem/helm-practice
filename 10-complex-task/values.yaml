@@ -1,0 +1,34 @@
+# Cover the following use-cases without breaking the previous cases
+services:
+# Create simple load service with label selector to app=<service.name> to port 8080
+- name: basic-service
+
+# Create service with a different selector
+- name: different-deployment-service
+  selector: # use this in service .spec.selector setting
+    app: the-deployment
+    stage: production
+
+# Create ingress too for services with ingress.enabled = true
+- name: service-with-ingress
+  ingress:
+    enabled: true
+    host: service-with-ingress.internal # Results to api.service-with-ingress.internal
+
+# Set ingress with https and certificate for services with ingress.external = true
+- name: service-with-ingress
+  ingress:
+    enabled: true
+    external: true
+    host: mycompany.com
+
+# Set up service and ingress with multiple ports and multiple host names
+- name: service
+  ports:
+  - name: "diag" # defaults to ingress name diag.service.internal
+    port: 8383
+  - name: "api" # defaults to ingress name api.service.internal
+    port: 8080
+  ingress:
+    enabled: true
+

@@ -1,0 +1,34 @@
+# Read the values.yaml for instructions this time
+# use the ones below as an example on how the output should look like
+apiVersion: v1
+kind: Service
+metadata:
+  name: cps-cache-service
+spec:
+  ports:
+  - name: svc
+    port: 8282
+    targetPort: 8383
+  selector:
+    app: cps-cache-service
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]' # 443 for https
+    alb.ingress.kubernetes.io/scheme: internal # external for https
+    alb.ingress.kubernetes.io/target-type: instance
+    kubernetes.io/ingress.class: alb
+  name: cps-cache-service
+spec:
+  rules:
+  - host: svc.service.internal
+    http:
+      paths:
+      - backend:
+          serviceName: cps-cache-service
+          servicePort: svc
+        path: /*
