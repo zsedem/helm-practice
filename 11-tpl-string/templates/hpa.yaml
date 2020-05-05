@@ -1,0 +1,12 @@
+# Use the set function to create a $params,which will be satisfy
+# all requirements of the hpaTemplate
+{{ range .Values.hpas -}}
+---
+{{ $params := dict -}}
+## Insert your code here
+
+###
+{{ $_ := set $ "params" $params -}}
+{{ tpl $.Values.hpaTemplate $ -}}
+{{ end -}}
+

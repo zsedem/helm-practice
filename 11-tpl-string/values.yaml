@@ -1,0 +1,25 @@
+hpas:
+- name: myhpa
+  deploymentName: myhpa-v2
+- name: myotherhpa
+
+hpaTemplate: |
+  {{ $params := required "No params defined" .params  }}
+  {{ $_ := required "No name defined in params" $params.name }}
+  {{ $_ := required "No replicas defined in params" $params.replicas }}
+  {{ $_ := required "No replicas.max defined in params" $params.replicas.max }}
+  {{ $_ := required "No replicas.min defined in params" $params.replicas.min }}
+  {{ $_ := required "No cputarget defined in params" $params.cputarget }}
+  apiVersion: autoscaling/v1
+  kind: HorizontalPodAutoscaler
+  metadata:
+    name: {{ $params.name }}
+  spec:
+    maxReplicas: {{ $params.replicas.max }}
+    minReplicas: {{ $params.replicas.min }}
+    scaleTargetRef:
+      apiVersion: extensions/v1beta1
+      kind: Deployment
+      name: {{ default $params.deploymentName $params.name }}
+    targetCPUUtilizationPercentage: {{ $params.cputarget }}
+
