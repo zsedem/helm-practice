@@ -1,5 +1,2 @@
 hpas:
-- name: myhpa
-  deploymentName: myhpa-v2
-- name: myotherhpa
-- deploymentName: 3rdhpa
+- name: MYOTHERHpa

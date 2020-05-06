@@ -1,0 +1,50 @@
+{{ range $.Values.services }}
+{{ $ports := default (list (dict "name" "api" "port" 8080)) .ports}} 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+spec:
+  ports:
+  {{ range $ports }}
+  - name: {{ .name }}
+    port: {{ .port }}
+    targetPort: {{ .port }}
+  {{ end }}
+  {{ $selector := default (dict "app" .name) .selector -}}
+  selector:
+{{ $selector | toYaml | indent 4}}
+  type: NodePort
+{{ $ingress := default .ingress dict }}
+{{ if $ingress.enabled }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    {{ if .ingress.external -}}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 443}]'
+    alb.ingress.kubernetes.io/scheme: external
+    {{ else -}}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/scheme: internal
+    {{ end -}}
+    alb.ingress.kubernetes.io/target-type: instance
+    kubernetes.io/ingress.class: alb
+  name: {{ .name }}
+spec:
+  rules:
+  {{ $serviceConfig := . -}}
+  {{ range $ports -}}
+  - host: {{ .name }}.{{ $serviceConfig.name }}.internal
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $serviceConfig.name }}
+          servicePort: {{ .name }}
+        path: /*
+  {{ end }}
+{{ end }}
+{{ end }}

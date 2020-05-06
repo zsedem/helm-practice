@@ -1,5 +1,6 @@
 # Read the values.yaml for instructions this time
 # use the ones below as an example on how the output should look like
+{{ range .Values.services -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,6 +13,7 @@ spec:
   selector:
     app: cps-cache-service
   type: NodePort
+{{ if (default .ingress dict).enabled -}}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -32,3 +34,6 @@ spec:
           serviceName: cps-cache-service
           servicePort: svc
         path: /*
+
+{{ end -}}
+{{ end -}}

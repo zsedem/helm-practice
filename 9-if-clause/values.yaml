@@ -7,4 +7,4 @@ deployments:
   deploymentName: my-second-deployment-without-hpa
 - hpa:
     enabled: true
-  deploymentName: my-third-deployment-without-hpa
+  deploymentName: my-third-deployment-with-hpa

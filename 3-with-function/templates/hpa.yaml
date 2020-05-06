@@ -6,11 +6,13 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.application.name }}
 spec:
-  maxReplicas: {{ .Values.really.nested.hpa.replicas.max }}
-  minReplicas: {{ .Values.really.nested.hpa.replicas.min }}
+  {{ with $.Values.really.nested.hpa }}
+  maxReplicas: {{ .replicas.max }}
+  minReplicas: {{ .replicas.min }}
   scaleTargetRef:
     apiVersion: extensions/v1beta1
     kind: Deployment
-    name: {{ .Values.application.name }}
-  targetCPUUtilizationPercentage: {{ .Values.really.nested.hpa.cpu }}
+    name: {{ $.Values.application.name }}
+  targetCPUUtilizationPercentage: {{ .cpu }}
+  {{ end -}}
 

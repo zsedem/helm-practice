@@ -1,6 +1,6 @@
 # Cover the following use-cases without breaking the previous cases
 services:
-# Create simple load service with label selector to app=<service.name> to port 8080
+# Create simple load service with label selector to app=<.name> to port 8080
 - name: basic-service
 
 # Create service with a different selector

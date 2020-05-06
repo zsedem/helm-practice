@@ -1,5 +1,7 @@
-{{ define "my.hpa" }}
-{{ $name:= .name }}
+# Use `range` to define these hpas from the .Values.hpas array
+{{ range .Values.hpas -}}
+---
+{{ $name:= .name -}}
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -12,13 +14,5 @@ spec:
     kind: Deployment
     name: {{ $name }}
   targetCPUUtilizationPercentage: 85
-
-{{ end }}
-
-# Use a for loop to define these hpas from the .Values.hpas array
-{{ template "my.hpa" (index  .Values.hpas 0 ) }}
----
-{{ template "my.hpa" (index  .Values.hpas 1 ) }}
----
-{{ template "my.hpa" (index  .Values.hpas 2 ) }}
+{{ end -}}
 

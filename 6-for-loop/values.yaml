@@ -1,4 +1,6 @@
 hpas:
 - name: myhpa
+  min: 31
+  max: 32
 - name: myotherhpa
 - name: 3rdhpa

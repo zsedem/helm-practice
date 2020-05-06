@@ -1,11 +1,11 @@
 # Use default and required functions for the following tasks
 #
-#   1. make the template fail to run if name is not provided in the array
+#  * 1. make the template fail to run if name is not provided in the array
 #   2. make the deploymentName variable to be the name by default if it is not provided
 #
 {{ define "my.hpa" }}
-{{ $name:= .name }}
-{{ $deploymentName:= .deploymentName }}
+{{ $name:= required "Name is not found in the hpa settings" .name }}
+{{ $deploymentName:= default (lower .name) .deploymentName }}
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:

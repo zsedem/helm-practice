@@ -1,10 +1,10 @@
 # Use the defined mapping in values.yaml to define $region and
 # $shortRegion variables correctly
 #
-{{ range .Values.hpas }}
+{{ range .Values.regions }}
 ---
-{{ $region := ??? }}
-{{ $shortRegion := ??? }}
+{{ $region := . }}
+{{ $shortRegion := index $.Values.shortRegions $region  }}
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:

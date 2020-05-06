@@ -2,12 +2,12 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $.Values.application.wrongname }}
+  name: {{ $.Values.application.name }}
 spec:
   maxReplicas: 2
   minReplicas: 1
-  scaleTargetRe2:
+  scaleTargetRef:
     apiVersion: extensions/v1beta1
     kind: Deployment
-    name: {{ $.Values.application.wrongname }}
+    name: {{ $.Values.application.name }}
   targetCPUUtilizationPercentage: 85
